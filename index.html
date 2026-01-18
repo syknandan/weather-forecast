@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Weather App - Get current weather and 5-day forecast">
+    <title>Weather App | Internship Project</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                        <circle cx="12" cy="12" r="5" />
+                    </svg>
+                    WeatherNow
+                </h1>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.35-4.35" />
+                    </svg>
+                    <input type="text" id="citySearch" class="search-input" placeholder="Search for a city..."
+                        aria-label="Search for a city" autocomplete="off">
+                    <button class="clear-btn" id="clearBtn" aria-label="Clear search">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="suggestions" id="suggestions" role="listbox"></div>
+            </div>
+            <button class="current-location-btn" id="currentLocationBtn" aria-label="Use current location">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <circle cx="12" cy="12" r="3" />
+                    <line x1="12" y1="2" x2="12" y2="6" />
+                    <line x1="12" y1="18" x2="12" y2="22" />
+                    <line x1="2" y1="12" x2="6" y2="12" />
+                    <line x1="18" y1="12" x2="22" y2="12" />
+                </svg>
+                Current Location
+            </button>
+        </section>
+
+        <!-- Loading State -->
+        <div class="loading" id="loading" role="status" aria-live="polite">
+            <div class="spinner"></div>
+            <p>Loading weather data...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage" role="alert" aria-live="assertive">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            <p id="errorText"></p>
+        </div>
+
+        <!-- Weather Content -->
+        <div class="weather-content" id="weatherContent">
+            <!-- Current Weather -->
+            <section class="current-weather" id="currentWeather">
+                <div class="weather-header">
+                    <div class="location-info">
+                        <h2 class="city-name" id="cityName"></h2>
+                        <p class="date-time" id="dateTime"></p>
+                    </div>
+                    <button class="favorite-btn" id="favoriteBtn" aria-label="Add to favorites">
+                        <svg class="heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                        <svg class="heart-filled" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="weather-main">
+                    <div class="weather-icon-large" id="weatherIcon"></div>
+                    <div class="temperature-display">
+                        <span class="temperature" id="temperature"></span>
+                        <span class="unit">°C</span>
+                    </div>
+                    <p class="weather-description" id="weatherDescription"></p>
+                </div>
+
+                <div class="weather-details">
+                    <div class="detail-card">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                        </svg>
+                        <div class="detail-info">
+                            <span class="detail-label">Feels Like</span>
+                            <span class="detail-value" id="feelsLike"></span>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                        </svg>
+                        <div class="detail-info">
+                            <span class="detail-label">Humidity</span>
+                            <span class="detail-value" id="humidity"></span>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2" />
+                        </svg>
+                        <div class="detail-info">
+                            <span class="detail-label">Wind Speed</span>
+                            <span class="detail-value" id="windSpeed"></span>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                        </svg>
+                        <div class="detail-info">
+                            <span class="detail-label">Pressure</span>
+                            <span class="detail-value" id="pressure"></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5-Day Forecast -->
+            <section class="forecast-section">
+                <h3 class="section-title">5-Day Forecast</h3>
+                <div class="forecast-container" id="forecastContainer"></div>
+            </section>
+
+            <!-- Favorite Cities -->
+            <section class="favorites-section" id="favoritesSection">
+                <h3 class="section-title">Favorite Cities</h3>
+                <div class="favorites-container" id="favoritesContainer"></div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
