@@ -2,7 +2,6 @@
 
 A modern, responsive weather application built with vanilla JavaScript that fetches real-time weather data from the OpenWeatherMap API. This project demonstrates key concepts including async/await, API integration, Local Storage persistence, debouncing, and responsive design.
 
-![Weather App Screenshot](screenshots/main-view.png)
 
 ## 🌟 Features
 
